@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> 111 </title>
+    <script type="text/javascript">
+        var UIAutoMonkey = {
+            config: {
+                numberOfEvents: 20,
+                eventWeights: {
+                    tap: 100,
+                    drag: 1,
+                    flick: 1,
+                    orientation: 1,
+                    clickVolumeUp: 1,
+                    clickVolumeDown: 1,
+                    lock: 1,
+                    pinchClose: 10,
+                    pinchOpen: 10,
+                    // ...
+                    shake: 1,
+                    memoryWarning: 50
+                }
+            },
+            RELEASE_THE_MONKEY: function() {
+                // Called at the bottom of this script to, you know...
+                //
+                // RELEASE THE MONKEY!
+
+                for(var i = 0; i < this.config.numberOfEvents; i++) {
+                    this.triggerRandomEvent();
+                }
+            },
+
+            triggerRandomEvent: function() {
+                var name = this.chooseEventName();
+                // Find the event method based on the name of the event
+                var event = this[name + "Event"];
+//                alert(event)
+            },
+            chooseEventName: function() {
+                // Randomly chooses an event name from the `eventsWeight` dictionary
+                // based on the given weights.
+                var calculatedEventWeights = [];
+                var totalWeight = 0;
+                var events = this.config.eventWeights;
+                for (var event in events) {
+                    if (events.hasOwnProperty(event)) {
+//                        alert(event);//drag
+//                        alert(typeof event);//string
+//                        alert(events);//[object Object]
+//                        alert(typeof events);//object
+//                        alert(events[event]);//1
+//                        alert(event.constructor);//function String() { [native code] }
+//                        alert(events.constructor);//function Object() { [native code] }
+                        calculatedEventWeights.push({
+                            weight: events[event]+totalWeight,
+                            event: event
+                        });
+//                        alert(typeof calculatedEventWeights);//object
+//                        alert(calculatedEventWeights[0].weight);//1
+//                        alert(calculatedEventWeights[0].event);//drag
+//                        alert(calculatedEventWeights.length);//1
+                        totalWeight += events[event];
+                    }
+                }
+
+                var chosenWeight = Math.random() * 1000 % totalWeight;
+                alert(chosenWeight);
+                for (var i = 0; i < calculatedEventWeights.length; i++) {
+                    alert(calculatedEventWeights[i].weight);
+                    if (chosenWeight < calculatedEventWeights[i].weight) {
+                        alert("enter if");
+                        alert(calculatedEventWeights[i].weight);
+                        alert(calculatedEventWeights[i].event);
+                        return calculatedEventWeights[i].event;
+                    }
+                }
+
+                throw "No even was chosen!";
+            }
+        };
+        UIAutoMonkey.RELEASE_THE_MONKEY();
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
